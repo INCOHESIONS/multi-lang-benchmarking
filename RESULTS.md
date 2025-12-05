@@ -9,7 +9,7 @@
 ---
 
 ## Summary
-> run - total, avg, min and max
+> run - total, avg, min and max (sorted by avg)
 
 - Python (GPU, compushady) - `0.014s`, `0.001s`, `0.001s` and `0.001s`.
 - Python (GPU, zengl) - `0.051s`, `0.005s`, `0.005s` and `0.006s`.
@@ -27,7 +27,7 @@
 ---
 
 ## All runs
-> run - timings
+> run - timings (sorted by avg)
 
 - Python (GPU, compushady) - `0.001s`, `0.001s`, `0.001s`, `0.001s`, `0.001s`, `0.001s`, `0.001s`, `0.001s`, `0.001s` and `0.001s`.
 - Python (GPU, zengl) - `0.005s`, `0.005s`, `0.005s`, `0.005s`, `0.005s`, `0.005s`, `0.006s`, `0.005s`, `0.005s` and `0.005s`.
