@@ -9,12 +9,13 @@ The algorithm in question is a simplified version of Worley/Voronoi Noise, that 
 Here are the recommended versions of all the tools needed to run all the currently available versions of the program:
 
 - .NET 10+
+- Bun 1.3.3+
 - Clang 21.1.6+ (or any version or compiler that supports C++23)
 - Go 1.25+
 - Java 24+
-- Node 22.20+
 - Python 3.14+
 - Rust 1.84+
+- Zig 0.15.2+
 
 All folders should have a file that indicate the dependencies required to run the program (`requirements.txt` for Python, `.csproj` for C#, `Cargo.toml` for Rust, etc) and if they don't, they simply require no dependencies (Java) or the dependecies are bundled (C++).
 
