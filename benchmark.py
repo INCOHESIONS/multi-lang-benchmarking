@@ -25,7 +25,8 @@ def format_list(text: str, /) -> str:
 
 def format_time(seconds: float, /) -> str:
     if seconds > 60:
-        return f"{seconds / 60:.3f}min"
+        minutes, seconds = divmod(seconds, 60)
+        return f"{str(int(minutes)).rjust(2, '0')}:{int(seconds)}min"
     return f"{seconds:.3f}s"
 
 
@@ -59,10 +60,11 @@ perf: dict[Path, list[float]] = {dir: [] for dir in all_dirs}
 for dir in all_dirs:
     if not any(file.name == "run.bat" for file in dir.iterdir()):
         name = format_dir_name(dir)
-        logger.error(f"{name}: directory lacks run.bat")
-        exit()
+        raise RuntimeError(f"{name}: directory lacks run.bat")
 
-logger.warning(f"Beginning runs for {len(all_dirs)} directories.")
+logger.info(
+    f"Beginning runs for {len(all_dirs)} programs ({format_list(', '.join(map(format_dir_name, all_dirs)))[:-1]}).\n"
+)
 
 start = perf_counter()
 
@@ -109,7 +111,8 @@ for dir in all_dirs:
         print("".join(*Erase.lines()), end="")
 
         logger.debug(
-            f"{name}: run #{run} took {time:.3f}s" + (" (discarded)" if discard else "")
+            f"{name}: run #{run} took {format_time(time)}."
+            + (" (discarded)" if discard else "")
         )
 
         if discard:
@@ -118,19 +121,20 @@ for dir in all_dirs:
         perf[dir].append(time)
 
     logger.info(
-        f"{name}: finished (took {sum(perf[dir]):.3f}s, {perf_counter() - start:.3f}s so far)"
+        f"{name}: finished (took {format_time(sum(perf[dir]))}, {format_time(perf_counter() - start)} so far).\n"
     )
 
+cpu = cpuinfo.get_cpu_info()
 gpu = compushady.get_discovered_devices()[0]
 
 lines = [
     "# Worley Noise Benchmarking |\n",
-    f"> CPU: {cpuinfo.get_cpu_info()['brand_raw']} |\n",
+    f"> CPU: {cpu['brand_raw']} ({cpu['hz_advertised_friendly']} GHz) |\n",
     f"> GPU: {gpu.name} |\n",
     f"> RAM: {round(psutil.virtual_memory().total / (1024**2), 2)} MB |\n",
     f"> VRAM: {gpu.dedicated_video_memory // (1024**2)} MB |\n",
     f"> Width: {WIDTH}; Height: {HEIGHT}; Number of points: {NUMBER_OF_POINTS} |\n",
-    f"> {len(all_dirs)} directories, {RUN_COUNT + 1} runs each (1st run is discarded and not included)\n\n",
+    f"> {len(all_dirs)} programs, {RUN_COUNT + 1} runs each (1st run is discarded and not included)\n\n",
     "## Summary\n",
     "> run - total, avg, min and max\n\n",
 ]
