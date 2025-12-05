@@ -147,7 +147,7 @@ lines = [
     "---",
     "",
     "## Summary",
-    "> run - total, avg, min and max",
+    "> run - total, avg, min and max (sorted by avg)",
     "",
     *(
         f"- {format_dir_name(dir)} - {format_timings(timings)}"
@@ -157,7 +157,7 @@ lines = [
     "---",
     "",
     "## All runs",
-    "> run - timings",
+    "> run - timings (sorted by avg)",
     "",
     *(
         f"- {format_dir_name(dir)} - {format_list(', '.join(map(lambda t: f'`{format_time(t)}`', timings)))}"
