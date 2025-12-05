@@ -137,7 +137,7 @@ worst_run = max(perf.items(), key=lambda i: sum(i[1]) / len(i))
 
 lines = [
     "# Worley Noise Benchmarking",
-    f"> CPU: {cpu['brand_raw']} ({cpu['hz_advertised_friendly']} GHz) |",
+    f"> CPU: {cpu['brand_raw']} ({float(cpu['hz_advertised_friendly'].split()[0]):.2f} GHz) |",
     f"> GPU: {gpu.name} |",
     f"> RAM: {round(psutil.virtual_memory().total / (1024**2), 2)} MB |",
     f"> VRAM: {gpu.dedicated_video_memory // (1024**2)} MB |",
