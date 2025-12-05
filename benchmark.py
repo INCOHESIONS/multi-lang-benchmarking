@@ -124,57 +124,58 @@ for dir in all_dirs:
         f"{name}: finished (took {format_time(sum(perf[dir]))}, {format_time(perf_counter() - start)} so far).\n"
     )
 
+perf_sorted: dict[Path, list[float]] = {}
+
+for key, value in sorted(perf.items(), key=lambda i: sum(i[1]) / len([1])):
+    perf_sorted[key] = value
+
 cpu = cpuinfo.get_cpu_info()
 gpu = compushady.get_discovered_devices()[0]
-
-lines = [
-    "# Worley Noise Benchmarking |\n",
-    f"> CPU: {cpu['brand_raw']} ({cpu['hz_advertised_friendly']} GHz) |\n",
-    f"> GPU: {gpu.name} |\n",
-    f"> RAM: {round(psutil.virtual_memory().total / (1024**2), 2)} MB |\n",
-    f"> VRAM: {gpu.dedicated_video_memory // (1024**2)} MB |\n",
-    f"> Width: {WIDTH}; Height: {HEIGHT}; Number of points: {NUMBER_OF_POINTS} |\n",
-    f"> {len(all_dirs)} programs, {RUN_COUNT + 1} runs each (1st run is discarded and not included)\n\n",
-    "## Summary\n",
-    "> run - total, avg, min and max\n\n",
-]
-
-lines.extend(
-    f"- {format_dir_name(dir)} - {format_timings(timings)}\n"
-    for dir, timings in perf.items()
-)
-
-dashes = "\n" + "-" * max(len(line) for line in lines) + "\n\n"
-
-lines.insert(7, dashes[1:])
-lines.append(dashes)
-lines.append("## All runs\n")
-lines.append("> run - timings\n\n")
-
-lines.extend(
-    f"- {format_dir_name(dir)} - {format_list(', '.join(map(lambda t: f'`{format_time(t)}`', timings)))}\n"
-    for dir, timings in perf.items()
-)
-
-lines.append(dashes)
-
-lines.append("## Stats\n\n")
 
 best_run = min(perf.items(), key=lambda i: sum(i[1]) / len(i))
 worst_run = max(perf.items(), key=lambda i: sum(i[1]) / len(i))
 
-lines.append(f"- best avg: `{format_dir_name(best_run[0])}`.\n")
-lines.append(f"- worst avg: `{format_dir_name(worst_run[0])}`.\n")
-lines.append(
-    f"- total time taken (just runs): `{format_time(sum(sum(timings) for timings in perf.values()))}`.\n"
-)
-lines.append(
-    f"- total time taken (including prep): `{format_time(perf_counter() - start)}`.\n"
-)
+lines = [
+    "# Worley Noise Benchmarking",
+    f"> CPU: {cpu['brand_raw']} ({cpu['hz_advertised_friendly']} GHz) |",
+    f"> GPU: {gpu.name} |",
+    f"> RAM: {round(psutil.virtual_memory().total / (1024**2), 2)} MB |",
+    f"> VRAM: {gpu.dedicated_video_memory // (1024**2)} MB |",
+    f"> Width: {WIDTH}; Height: {HEIGHT}; Number of points: {NUMBER_OF_POINTS} |",
+    f"> {len(all_dirs)} programs, {RUN_COUNT + 1} runs each (1st run is discarded and not included)",
+    "",
+    "---",
+    "",
+    "## Summary",
+    "> run - total, avg, min and max",
+    "",
+    *(
+        f"- {format_dir_name(dir)} - {format_timings(timings)}"
+        for dir, timings in perf_sorted.items()
+    ),
+    "",
+    "---",
+    "",
+    "## All runs",
+    "> run - timings",
+    "",
+    *(
+        f"- {format_dir_name(dir)} - {format_list(', '.join(map(lambda t: f'`{format_time(t)}`', timings)))}"
+        for dir, timings in perf_sorted.items()
+    ),
+    "",
+    "---",
+    "",
+    "## Stats",
+    "",
+    f"- best avg: `{format_dir_name(best_run[0])}`.",
+    f"- worst avg: `{format_dir_name(worst_run[0])}`.",
+    f"- total time taken (just runs): `{format_time(sum(sum(timings) for timings in perf.values()))}`.",
+    f"- total time taken (including prep): `{format_time(perf_counter() - start)}`.",
+]
 
-lines.append(dashes[:-2])
 
 with open("RESULTS.md", mode="w+t", encoding="utf-8") as file:
-    file.writelines(lines)
+    file.writelines((line + "\n" for line in lines))
 
 logger.warning("Done!")
