@@ -18,7 +18,12 @@ fn main() {
     let instant = std::time::Instant::now();
 
     let img = GrayImage::from_fn(width, height, |x, y| {
-        let closest = points.iter().map(|p| dist(p, x, y)).min().unwrap();
+        let closest = points
+            .iter()
+            .map(|p| squared_dist(p, x, y))
+            .min()
+            .unwrap()
+            .isqrt();
         Luma([255 - closest.clamp(0, 255) as u8])
     });
 
@@ -40,6 +45,12 @@ fn main() {
         .expect(&format!("Unable to save image at path {}", &path));
 }
 
+fn squared_dist(p: &(u32, u32), x: u32, y: u32) -> u32 {
+    let dx = x - p.0;
+    let dy = y - p.1;
+    dx * dx + dy * dy
+}
+
 const ASCII_LOWERCASE: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 fn generate_random_characters(length: usize) -> String {
@@ -48,10 +59,4 @@ fn generate_random_characters(length: usize) -> String {
     (0..length)
         .map(|_| ASCII_LOWERCASE.chars().choose(&mut rng).unwrap())
         .collect()
-}
-
-fn dist(p: &(u32, u32), x: u32, y: u32) -> u32 {
-    let a = p.0 - x;
-    let b = p.1 - y;
-    (a * a + b * b).isqrt() as u32
 }

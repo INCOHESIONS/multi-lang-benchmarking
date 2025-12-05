@@ -54,9 +54,9 @@ FRAGMENT_SHADER = """
         float minDist = INFINITY;
 
         for (int i = 0; i < numberOfPoints; i++)
-            minDist = min(minDist, distance(points[i], gl_FragCoord.xy));
+            minDist = min(minDist, dot(points[i] - gl_FragCoord.xy, points[i] - gl_FragCoord.xy));
 
-        float color = 1.0 - minDist / 255.0;
+        float color = 1.0 - sqrt(minDist) / 255.0;
 
         out_color = vec4(color, color, color, 1.0);
     }

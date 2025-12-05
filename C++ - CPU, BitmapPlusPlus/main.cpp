@@ -4,6 +4,7 @@
 #include <ranges>
 #include <chrono>
 #include <filesystem>
+#include <algorithm>
 #include <limits>
 #include <cstdlib>
 
@@ -34,9 +35,11 @@ namespace
         return static_cast<int>(conv);  // assuming no errors
     }
 
-    int distance(const std::pair<int, int> p1, const int x, const int y)
+    int squared_distance(const std::pair<int, int> p1, const int x, const int y)
     {
-        return static_cast<int>(std::hypotl(p1.first - x, p1.second - y));
+        const int dx = x - p1.first;
+        const int dy = y - p1.second;
+        return dx * dx + dy * dy;
     }
 
     constexpr std::string_view characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -62,7 +65,7 @@ int main(const int argc, const char* argv[])
     const int width = as_int(argv[1]);
     const int height = as_int(argv[2]);
     const int number_of_points = as_int(argv[3]);
-    const int save_image = strcmp(argv[4], "true");
+    const bool save_image = strcmp(argv[4], "false");
 
     if (width <= 0 || height <= 0 || number_of_points <= 0)
         throw std::invalid_argument("Usage: ./program.exe <width> <height> <number_of_points> <save image?>");
@@ -85,9 +88,9 @@ int main(const int argc, const char* argv[])
             int min_dist = std::numeric_limits<int>::max();
 
             for (const auto& p : points)
-                min_dist = std::min(min_dist, distance(p, x, y));
+                min_dist = std::min(min_dist, squared_distance(p, x, y));
 
-            const char c = static_cast<char>(255 - min_dist);
+            const char c = static_cast<char>(255 - std::clamp(std::sqrt(min_dist), 0.0, 255.0));
             image.set(x, y, bmp::Pixel(c, c, c));
         }
 

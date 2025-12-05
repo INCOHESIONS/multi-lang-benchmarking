@@ -1,1 +1,2 @@
 pillow>=12.0.0
+numba>=0.63.0rc1  # first version that supports python 3.14

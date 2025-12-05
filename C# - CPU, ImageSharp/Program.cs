@@ -1,3 +1,4 @@
+using System.IO;
 using System.Diagnostics;
 using System.Globalization;
 using SixLabors.ImageSharp;
@@ -7,13 +8,18 @@ using System.Linq;
 
 const string CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-string randomCharacters(int length = 10)
+string RandomCharacters(int length = 10)
 {
     var random = new Random();
     return string.Join("", (from _ in Enumerable.Range(0, length) select CHARS[random.Next(0, CHARS.Length)]).ToArray()) ?? "error";
 }
 
-float dist((int, int) p, int x, int y) => float.Hypot(x - p.Item1, y - p.Item2);
+float SquaredDistance((int, int) p, int x, int y)
+{
+    int dx = x - p.Item1;
+    int dy = y - p.Item2;
+    return dx * dx + dy * dy;
+}
 
 var width = Convert.ToInt32(args[0]);
 var height = Convert.ToInt32(args[1]);
@@ -34,9 +40,9 @@ for (int x = 0; x < width; x++)
         float minDist = float.PositiveInfinity;
 
         foreach (var p in points)
-            minDist = MathF.Min(minDist, dist(p, x, y));
+            minDist = MathF.Min(minDist, SquaredDistance(p, x, y));
 
-        float color = (255.0F - Math.Clamp(minDist, 0.0F, 255.0F)) / 255.0F;
+        float color = (255.0F - Math.Clamp((float)Math.Sqrt(minDist), 0.0F, 255.0F)) / 255.0F;
         image[x, y] = new(color, color, color);
     }
 
@@ -46,4 +52,5 @@ Console.WriteLine((watch.ElapsedMilliseconds / 1000.0).ToString(CultureInfo.Inva
 
 if (!saveImage) return;
 
-image.Save($"img/{randomCharacters()}.png");
+Directory.CreateDirectory("img/");
+image.Save($"img/{RandomCharacters()}.png");

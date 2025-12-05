@@ -18,8 +18,10 @@ type Point struct {
 	y int
 }
 
-func (p1 Point) distance(x, y int) int {
-	return int(math.Hypot(float64(x-p1.x), float64(y-p1.y)))
+func (p1 Point) squaredDistance(x, y int) int {
+	dx := x - p1.x
+	dy := y - p1.y
+	return dx*dx + dy*dy
 }
 
 func main() {
@@ -28,7 +30,7 @@ func main() {
 	width, _ := strconv.Atoi(os.Args[1])
 	height, _ := strconv.Atoi(os.Args[2])
 	numberOfPoints, _ := strconv.Atoi(os.Args[3])
-	saveImage := os.Args[3] == "true"
+	saveImage := os.Args[4] == "true"
 
 	points := generatePoints(width, height, numberOfPoints)
 
@@ -74,10 +76,10 @@ func generateImage(width, height int, points []Point) *image.Gray {
 			minDistance := math.MaxInt
 
 			for _, p := range points {
-				minDistance = min(minDistance, p.distance(x, y))
+				minDistance = min(minDistance, p.squaredDistance(x, y))
 			}
 
-			color := color.Gray{255 - uint8(clamp(minDistance, 0, 255))}
+			color := color.Gray{255 - uint8(clamp(int(math.Sqrt(float64(minDistance))), 0, 255))}
 
 			img.Set(x, y, color)
 		}

@@ -5,8 +5,10 @@ function random(min: number, max: number) {
     return Math.random() * (max - min) + min;
 }
 
-function dist(p: Array<number>, x: number, y: number): number {
-    return Math.hypot(x - p[0], y - p[1]);
+function squared_dist(p: Array<number>, x: number, y: number): number {
+    const dx = x - p[0];
+    const dy = y - p[0];
+    return dx * dx + dy * dy;
 }
 
 function clamp(value: number, min: number, max: number) {
@@ -43,9 +45,10 @@ for (let x = 0; x < width; x++)
     for (let y = 0; y < height; y++) {
         let minDist = Number.MAX_VALUE;
 
-        for (const p of points) minDist = Math.min(minDist, dist(p, x, y));
+        for (const p of points)
+            minDist = Math.min(minDist, squared_dist(p, x, y));
 
-        const color = 255 - clamp(minDist, 0, 255);
+        const color = 255 - clamp(Math.sqrt(minDist), 0, 255);
 
         ctx.fillStyle = `rgba(${color}, ${color}, ${color}, 1)`;
         ctx.fillRect(x, y, 1, 1);

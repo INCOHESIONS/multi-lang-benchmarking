@@ -1,3 +1,5 @@
+#pragma warning disable CA1416
+
 using ComputeSharp;
 using System.Diagnostics;
 using System.Globalization;
@@ -7,7 +9,7 @@ using System;
 
 const string CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-string randomCharacters(int length = 10)
+string RandomCharacters(int length = 10)
 {
     var random = new Random();
     return string.Join("", (from _ in Enumerable.Range(0, length) select CHARS[random.Next(0, CHARS.Length)]).ToArray()) ?? "error";
@@ -33,11 +35,10 @@ watch.Stop();
 
 Console.WriteLine((watch.ElapsedMilliseconds / 1000.0).ToString(CultureInfo.InvariantCulture));
 
-if (saveImage)
-{
-    Directory.CreateDirectory("img/");
-    texture.Save($"img/{randomCharacters()}.png");
-}
+if (!saveImage) return;
+
+Directory.CreateDirectory("img/");
+texture.Save($"img/{RandomCharacters()}.png");
 
 [ThreadGroupSize(DefaultThreadGroupSizes.XY)]
 [GeneratedComputeShaderDescriptor]
@@ -48,9 +49,9 @@ internal readonly partial struct WorleyNoise(ReadOnlyBuffer<float2> points) : IC
         float minDist = float.MaxValue;
 
         for (int i = 0; i < points.Length; i++)
-            minDist = Hlsl.Min(minDist, Hlsl.Distance(ThreadIds.XY, points[i]));
+            minDist = Hlsl.Min(minDist, Hlsl.Dot(points[i] - ThreadIds.XY, points[i] - ThreadIds.XY));
 
-        float color = 1.0F - Hlsl.Clamp(minDist, 0.0F, 255.0F) / 255.0F;
+        float color = 1.0F - Hlsl.Clamp(Hlsl.Sqrt(minDist), 0.0F, 255.0F) / 255.0F;
 
         return new float4(color, color, color, 1.0F);
     }

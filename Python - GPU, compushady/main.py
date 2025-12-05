@@ -50,9 +50,9 @@ SHADER = f"""
         float minDist = INFINITY;
 
         for (uint i = 0; i < {number_of_points}; i++)
-            minDist = min(minDist, distance(points[i], tid.xy));
+            minDist = min(minDist, dot(points[i] - tid.xy, points[i] - tid.xy));
 
-        const float color = 1.0F - clamp(minDist, 0.0F, 255.0F) / 255.0F;
+        const float color = 1.0F - clamp(sqrt(minDist), 0.0F, 255.0F) / 255.0F;
 
         target[tid.xy] = float4(color, color, color, 1.0F);
     }}
