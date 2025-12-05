@@ -1,0 +1,4 @@
+compushady>=0.17.5
+py_cpuinfo>=9.0.0
+psutil>=7.1.2
+bconsole>=0.0.28

@@ -1,0 +1,16 @@
+{
+    "name": "typescript---cpu",
+    "version": "0.0.1",
+    "main": "index.ts",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "description": "",
+    "type": "module",
+    "dependencies": {
+        "node-canvas": "2.9.0"
+    }
+}
