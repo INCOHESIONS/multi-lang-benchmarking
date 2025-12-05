@@ -1,5 +1,5 @@
 # Worley Noise Benchmarking
-> CPU: AMD Ryzen 7 5700X3D 8-Core Processor (3.0000 GHz GHz) |
+> CPU: AMD Ryzen 7 5700X3D 8-Core Processor (3.00 GHz) |
 > GPU: AMD Radeon RX 6600 |
 > RAM: 32694.5 MB |
 > VRAM: 8146 MB |
