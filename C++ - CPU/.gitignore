@@ -1,2 +1,4 @@
 program.exe
+*.user
+
 .idea/

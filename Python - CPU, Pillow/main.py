@@ -3,7 +3,7 @@ from math import isqrt
 from random import choice, randint
 from string import ascii_letters, digits
 from sys import argv
-from time import perf_counter
+from time import perf_counter_ns
 
 from PIL import Image
 
@@ -32,7 +32,7 @@ save_image = argv[4] == "true"
 image = Image.new("L", (width, height))
 points = tuple((randint(0, width), randint(0, height)) for _ in range(number_of_points))
 
-start = perf_counter()
+start = perf_counter_ns()
 
 data = [
     255 - clamp(min(isqrt(squared_dist(p, x, y)) for p in points), 0, 255)
@@ -40,7 +40,7 @@ data = [
     for y in range(height)
 ]
 
-end = perf_counter()
+end = perf_counter_ns()
 
 image.putdata(data)
 

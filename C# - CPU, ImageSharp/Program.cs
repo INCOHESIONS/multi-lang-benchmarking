@@ -14,7 +14,7 @@ string RandomCharacters(int length = 10)
     return string.Join("", (from _ in Enumerable.Range(0, length) select CHARS[random.Next(0, CHARS.Length)]).ToArray()) ?? "error";
 }
 
-float SquaredDistance((int, int) p, int x, int y)
+int SquaredDistance((int, int) p, int x, int y)
 {
     int dx = x - p.Item1;
     int dy = y - p.Item2;
@@ -37,18 +37,18 @@ watch.Start();
 for (int x = 0; x < width; x++)
     for (int y = 0; y < height; y++)
     {
-        float minDist = float.PositiveInfinity;
+        int minDist = int.MaxValue;
 
         foreach (var p in points)
-            minDist = MathF.Min(minDist, SquaredDistance(p, x, y));
+            minDist = Math.Min(minDist, SquaredDistance(p, x, y));
 
-        float color = (255.0F - Math.Clamp((float)Math.Sqrt(minDist), 0.0F, 255.0F)) / 255.0F;
+        float color = 1.0F - (float)Math.Clamp(Math.Sqrt(minDist), 0.0F, 255.0F) / 255.0F;
         image[x, y] = new(color, color, color);
     }
 
 watch.Stop();
 
-Console.WriteLine((watch.ElapsedMilliseconds / 1000.0).ToString(CultureInfo.InvariantCulture));
+Console.WriteLine(watch.Elapsed.TotalNanoseconds.ToString(CultureInfo.InvariantCulture));
 
 if (!saveImage) return;
 

@@ -13,17 +13,6 @@ import (
 	"time"
 )
 
-type Point struct {
-	x int
-	y int
-}
-
-func (p1 Point) squaredDistance(x, y int) int {
-	dx := x - p1.x
-	dy := y - p1.y
-	return dx*dx + dy*dy
-}
-
 func main() {
 	const PATH = "img/image.png"
 
@@ -34,13 +23,29 @@ func main() {
 
 	points := generatePoints(width, height, numberOfPoints)
 
+	imgRect := image.Rectangle{image.Point{0, 0}, image.Point{width, height}}
+
+	img := image.NewGray(imgRect)
+
 	start := time.Now()
 
-	img := generateImage(width, height, points)
+	for x := range width {
+		for y := range height {
+			minDistance := math.MaxInt
+
+			for _, p := range points {
+				minDistance = min(minDistance, squaredDistance(p, x, y))
+			}
+
+			color := color.Gray{255 - uint8(clamp(int(math.Sqrt(float64(minDistance))), 0, 255))}
+
+			img.Set(x, y, color)
+		}
+	}
 
 	end := time.Now()
 
-	fmt.Printf("%f", end.Sub(start).Seconds())
+	fmt.Printf("%d", end.Sub(start).Nanoseconds())
 
 	if !saveImage {
 		return
@@ -64,37 +69,19 @@ func main() {
 	png.Encode(file, img)
 }
 
-func generateImage(width, height int, points []Point) *image.Gray {
-	upperLeft := image.Point{0, 0}
-	bottomRight := image.Point{width, height}
-	imgRect := image.Rectangle{upperLeft, bottomRight}
-
-	img := image.NewGray(imgRect)
-
-	for x := range width {
-		for y := range height {
-			minDistance := math.MaxInt
-
-			for _, p := range points {
-				minDistance = min(minDistance, p.squaredDistance(x, y))
-			}
-
-			color := color.Gray{255 - uint8(clamp(int(math.Sqrt(float64(minDistance))), 0, 255))}
-
-			img.Set(x, y, color)
-		}
-	}
-
-	return img
+func squaredDistance(p image.Point, x, y int) int {
+	dx := x - p.X
+	dy := y - p.Y
+	return dx*dx + dy*dy
 }
 
-func generatePoints(width, height, numberOfPoints int) []Point {
-	points := make([]Point, numberOfPoints)
+func generatePoints(width, height, numberOfPoints int) []image.Point {
+	points := make([]image.Point, numberOfPoints)
 
 	for range points {
-		points = append(points, Point{
-			randomRange(0, width),
-			randomRange(0, height),
+		points = append(points, image.Point{
+			rand.Intn(width + 1),
+			rand.Intn(height + 1),
 		})
 	}
 
@@ -103,15 +90,4 @@ func generatePoints(width, height, numberOfPoints int) []Point {
 
 func clamp(value, minimum, maximum int) int {
 	return max(minimum, min(value, maximum))
-}
-
-func randomRange(min, max int) int {
-	return rand.Intn(max-min+1) + min
-}
-
-func input(msg string) int {
-	var n int
-	fmt.Print(msg)
-	fmt.Scan(&n)
-	return n
 }

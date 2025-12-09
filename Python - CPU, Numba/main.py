@@ -5,7 +5,7 @@ import os
 from random import choice, randint
 from string import ascii_letters, digits
 from sys import argv
-from time import perf_counter
+from time import perf_counter_ns
 
 import numpy as np
 from numba import njit  # pyright: ignore[reportUnknownVariableType]
@@ -55,11 +55,11 @@ points = np.array(
     dtype=np.int32,
 )
 
-start = perf_counter()
+start = perf_counter_ns()
 
 data = generate(width, height, points)
 
-end = perf_counter()
+end = perf_counter_ns()
 
 image.putdata(data)
 

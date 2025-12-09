@@ -8,7 +8,7 @@ from itertools import chain as flatten
 from random import choice, randint
 from string import ascii_letters, digits
 from sys import argv
-from time import perf_counter
+from time import perf_counter_ns
 
 import compushady
 from compushady.formats import B8G8R8A8_UNORM, R32G32_UINT
@@ -81,11 +81,12 @@ staging.copy_to(points)
 
 compute = compushady.Compute(compile(SHADER), uav=[target], srv=[points])
 
-start = perf_counter()
+start = perf_counter_ns()
 
 compute.dispatch(texture_width // 8, texture_height // 8, 1)
 
-end = perf_counter()
+end = perf_counter_ns()
+
 print(end - start)
 
 if not save_image:

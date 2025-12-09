@@ -11,9 +11,9 @@ import javax.imageio.ImageIO;
 public class WorleyNoise {
 
     private record Point(int x, int y) {
-        public float squared_dist(final int x, final int y) {
-            final float dx = x - this.x;
-            final float dy = y - this.y;
+        public int squaredDistance(final int x, final int y) {
+            final int dx = x - this.x;
+            final int dy = y - this.y;
             return dx * dx + dy * dy;
         }
     }
@@ -42,10 +42,10 @@ public class WorleyNoise {
         final var start = System.nanoTime();
 
         for (int x = 0; x < width; x++) for (int y = 0; y < height; y++) {
-            float minDist = Float.MAX_VALUE;
+            int minDist = Integer.MAX_VALUE;
 
             for (final var p : points)
-                minDist = Math.min(minDist, p.squared_dist(x, y));
+                minDist = Math.min(minDist, p.squaredDistance(x, y));
 
             final var color =
                 1.0F -
@@ -56,7 +56,7 @@ public class WorleyNoise {
 
         final var end = System.nanoTime();
 
-        System.out.println((end - start) / 1_000_000_000.0F);
+        System.out.println(end - start);
 
         if (!saveImage) return;
 

@@ -27,7 +27,7 @@ fn main() {
         Luma([255 - closest.clamp(0, 255) as u8])
     });
 
-    let elapsed = instant.elapsed().as_secs_f64();
+    let elapsed = instant.elapsed().as_nanos();
 
     println!("{elapsed}");
 

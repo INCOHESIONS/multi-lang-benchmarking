@@ -5,7 +5,7 @@ from itertools import chain as flatten
 from random import choice, uniform
 from string import ascii_letters, digits
 from sys import argv
-from time import perf_counter
+from time import perf_counter_ns
 
 import zengl
 from PIL import Image
@@ -100,14 +100,14 @@ points.write(
     )
 )
 
-start = perf_counter()
+start = perf_counter_ns()
 
 ctx.new_frame()
 image.clear()
 pipeline.render()
 ctx.end_frame()
 
-end = perf_counter()
+end = perf_counter_ns()
 
 print(end - start)
 

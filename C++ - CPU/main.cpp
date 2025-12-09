@@ -1,3 +1,5 @@
+// bmp_header and save() are based on https://github.com/baderouaich/BitmapPlusPlus/
+
 #include <algorithm>  // std::clamp
 #include <chrono>  // std::chrono::high_resolution_clock
 #include <filesystem>  // std::filesystem
@@ -12,8 +14,6 @@ namespace
     typedef std::pair<int, int> point;
 
 #pragma pack(push, 1)
-    // bmp_header and save() are based on https://github.com/baderouaich/BitmapPlusPlus/
-
     struct bmp_header {
         /* Bitmap file header structure */
         std::uint16_t magic = 0x4D42;                                /* Magic number for file always BM which is 0x4D42 */  // NOLINT
@@ -150,7 +150,7 @@ int main([[maybe_unused]] const int _, const char* const argv[])
 
     const auto end = clock::now();
 
-    const std::chrono::duration<double> dt = end - start;
+    const std::chrono::duration<double, std::nano> dt = end - start;
 
     std::println("{}", dt.count());
 

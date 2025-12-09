@@ -33,7 +33,7 @@ device.ForEach(texture, new WorleyNoise(points));
 
 watch.Stop();
 
-Console.WriteLine((watch.ElapsedMilliseconds / 1000.0).ToString(CultureInfo.InvariantCulture));
+Console.WriteLine(watch.Elapsed.TotalNanoseconds.ToString(CultureInfo.InvariantCulture));
 
 if (!saveImage) return;
 

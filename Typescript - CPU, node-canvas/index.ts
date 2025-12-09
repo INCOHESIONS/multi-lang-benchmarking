@@ -56,7 +56,7 @@ for (let x = 0; x < width; x++)
 
 const end = performance.now();
 
-console.log((end - start) / 1000);
+console.log((end - start) * 1_000_000);
 
 if (!saveImage) process.exit();
 

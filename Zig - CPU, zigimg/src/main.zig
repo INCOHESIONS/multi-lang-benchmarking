@@ -79,8 +79,7 @@ pub fn main() !void {
     var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
     const stdout = &stdout_writer.interface;
 
-    const seconds = @as(f64, @floatFromInt(elapsed_ns)) / 1_000_000_000.0;
-    try stdout.print("{}\n", .{seconds});
+    try stdout.print("{}\n", .{elapsed_ns});
     try stdout.flush();
 
     if (!save_image) return;
