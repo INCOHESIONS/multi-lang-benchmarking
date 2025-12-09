@@ -1,6 +1,6 @@
 # Multi-language Worley Noise Benchmarking
 
-This project aims to implement the same algorithm in multiple different languages, using multiple different libraries, and even in different devices (CPU/GPU), mostly for fun.
+This project aims to implement the same algorithm in multiple different languages, using multiple different libraries, and even in different devices (CPU/GPU), mostly for fun. Only tested on Windows.
 
 The algorithm in question is a simplified version of Worley/Voronoi Noise, that isn't based in cells or anything fancy. Just plop some points on the screen, and calculate the distance from each pixel to the nearest point.
 
@@ -14,10 +14,10 @@ Here are the recommended versions of all the tools needed to run all the current
 - Go 1.25+
 - Java 24+
 - Python 3.14+
-- Rust 1.84+
-- Zig 0.15.2+
+- Rust 1.85+ (2024 Edition)
+- Zig 0.15.2
 
-All folders should have a file that indicate the dependencies required to run the program (`requirements.txt` for Python, `.csproj` for C#, `Cargo.toml` for Rust, etc) and if they don't, they simply require no dependencies (Java).
+All folders should have a file that indicate the dependencies required to run the program (`requirements.txt` for Python, `.csproj` for C#, `Cargo.toml` for Rust, etc) and if they don't, they simply require no dependencies (C++ and Java).
 
 ## How it works
 
