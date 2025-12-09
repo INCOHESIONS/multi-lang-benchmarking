@@ -5,7 +5,7 @@ function random(min: number, max: number) {
     return Math.random() * (max - min) + min;
 }
 
-function squared_dist(p: Array<number>, x: number, y: number): number {
+function squared_dist(p: number[], x: number, y: number): number {
     const dx = x - p[0];
     const dy = y - p[0];
     return dx * dx + dy * dy;
@@ -15,7 +15,7 @@ function clamp(value: number, min: number, max: number) {
     return Math.min(Math.max(value, min), max);
 }
 
-function randomCharacters(length = 10) {
+function randomCharacters(length: number = 10) {
     const chars =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let result = "";
@@ -31,7 +31,7 @@ const height = parseInt(process.argv[3]);
 const numberOfPoints = parseInt(process.argv[4]);
 const saveImage = process.argv[5] == "true";
 
-const points: Array<Array<number>> = [];
+const points: number[][] = [];
 
 for (let i = 0; i < numberOfPoints; i++)
     points.push([random(0, width), random(0, height)]);

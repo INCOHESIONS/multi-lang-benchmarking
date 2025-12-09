@@ -79,9 +79,11 @@ public class WorleyNoise {
         final var builder = new StringBuilder(length);
         final var random = new Random();
 
-        for (int i = 0; i < length; i++) builder.append(
-            characters.charAt(random.nextInt(characters.length()))
-        );
+        for (int i = 0; i < length; i++) {
+            builder.append(
+                characters.charAt(random.nextInt(characters.length()))
+            );
+        }
 
         return builder.toString();
     }
