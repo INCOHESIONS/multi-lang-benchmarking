@@ -138,28 +138,20 @@ logger.info(
 
 programs.sort(key=lambda program: getattr(program, SORT_BY))
 
-summary = [
-    "## Summary",
-    f"> run - total, avg, min and max (sorted by {SORT_BY})",
-    "",
-    *(
-        f"{i + 1}. {program.formatted_name} - {program.formatted_info}"
-        for i, program in enumerate(programs)
-    ),
-]
-
-all_runs = [
-    "## All runs",
-    f"> run - timings (sorted by {SORT_BY})",
-    "",
-    *(
-        f"{i + 1}. {program.formatted_name} - {program.formatted_timings}"
-        for i, program in enumerate(programs)
-    ),
-]
-
 best_avg = min(programs, key=lambda p: p.avg)
 worst_avg = max(programs, key=lambda p: p.avg)
+
+summary = [
+    "## Summary",
+    f"> sorted by {SORT_BY}",
+    "",
+    "|  Run  |  Average  |  Min  |  Max  |   Total   |  Diff  |",
+    "|-------|:---------:|:-----:|:-----:|:---------:|:------:|",
+    *(
+        f"| {program.formatted_name} | {program.formatted_info} | {program.avg / best_avg.avg:.2f}x"
+        for program in programs
+    ),
+]
 
 stats = [
     "## Stats",
@@ -173,17 +165,9 @@ stats = [
 separator = ["", "---", ""]
 
 
-lines = [
-    *header,
-    *separator,
-    *summary,
-    *separator,
-    *all_runs,
-    *separator,
-    *stats,
-]
-
 with open("RESULTS.md", mode="w+t", encoding="utf-8") as file:
-    file.writelines((line + "\n" for line in lines))
+    file.writelines(
+        (line + "\n" for line in [*header, *separator, *summary, *separator, *stats])
+    )
 
 logger.info("Results were saved to RESULTS.md.")

@@ -18,8 +18,8 @@ def replace_last(text: str, old: str, new: str, /) -> str:
     return new.join(text.rsplit(old, 1))
 
 
-def format_list(text: str, /) -> str:
-    return replace_last(text, ", ", " and ") + "."
+def format_list(text: str, /, *, period: bool = True) -> str:
+    return replace_last(text, ", ", " and ") + ("." if period else "")
 
 
 def format_time(ns: float, /, *, only_seconds: bool = False) -> str:

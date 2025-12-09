@@ -41,10 +41,11 @@ class Program:
     @property
     def formatted_info(self) -> str:
         return format_list(
-            ", ".join(
+            " | ".join(
                 map(
                     lambda t: f"`{format_time(t)}`",
-                    (self.total, self.avg, self.min, self.max),
+                    (self.avg, self.min, self.max, self.total),
                 )
-            )
+            ),
+            period=False,
         )
