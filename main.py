@@ -145,8 +145,8 @@ summary = [
     "## Summary",
     f"> sorted by {SORT_BY}",
     "",
-    "|  Run  |  Average  |  Min  |  Max  |   Total   |  Diff  |",
-    "|-------|:---------:|:-----:|:-----:|:---------:|:------:|",
+    "|  Program  |  Average  |  Min  |  Max  |   Total   |  Diff  |",
+    "|-----------|:---------:|:-----:|:-----:|:---------:|:------:|",
     *(
         f"| {program.formatted_name} | {program.formatted_info} | {program.avg / best_avg.avg:.2f}x"
         for program in programs

@@ -11,8 +11,8 @@
 ## Summary
 > sorted by avg
 
-|  Run  |  Average  |  Min  |  Max  |   Total   |  Diff  |
-|-------|:---------:|:-----:|:-----:|:---------:|:------:|
+|  Program  |  Average  |  Min  |  Max  |   Total   |  Diff  |
+|-----------|:---------:|:-----:|:-----:|:---------:|:------:|
 | Python *with compushady* **(GPU)** | `1.438ms` | `1.429ms` | `1.442ms` | `14.377ms` | 1.00x
 | Python *with zengl* **(GPU)** | `5.050ms` | `4.874ms` | `5.434ms` | `50.502ms` | 3.51x
 | C# *with ComputeSharp* **(GPU)** | `8.338ms` | `7.923ms` | `10.239ms` | `83.375ms` | 5.80x
