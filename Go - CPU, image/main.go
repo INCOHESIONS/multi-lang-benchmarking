@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"image"
-	"image/color"
 	"image/png"
 	"math"
 	"math/rand"
@@ -23,9 +22,9 @@ func main() {
 
 	points := generatePoints(width, height, numberOfPoints)
 
-	imgRect := image.Rectangle{image.Point{0, 0}, image.Point{width, height}}
+	rect := image.Rectangle{image.Point{0, 0}, image.Point{width, height}}
 
-	img := image.NewGray(imgRect)
+	img := image.NewGray(rect)
 
 	start := time.Now()
 
@@ -37,9 +36,7 @@ func main() {
 				minDistance = min(minDistance, squaredDistance(p, x, y))
 			}
 
-			color := color.Gray{255 - uint8(clamp(int(math.Sqrt(float64(minDistance))), 0, 255))}
-
-			img.Set(x, y, color)
+			img.Pix[(y-rect.Min.Y)*img.Stride+(x-rect.Min.X)*1] = 255 - uint8(clamp(int(math.Sqrt(float64(minDistance))), 0, 255))
 		}
 	}
 
