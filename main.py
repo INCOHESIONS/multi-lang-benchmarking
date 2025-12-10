@@ -143,13 +143,13 @@ worst_avg = max(programs, key=lambda p: p.avg)
 
 summary = [
     "## Summary",
-    f"> sorted by {SORT_BY}",
+    f"> sorted by {SORT_BY}, diffs based on avg",
     "",
-    "|  Program  |  Average  |  Min  |  Max  |   Total   |  Diff  |",
-    "|-----------|:---------:|:-----:|:-----:|:---------:|:------:|",
+    "|  Program  |  Average  |  Min  |  Max  |   Total   |  Diff. from #1  | Diff. from Previous |",
+    "|-----------|:---------:|:-----:|:-----:|:---------:|:---------------:|:-------------------:|",
     *(
-        f"| {program.formatted_name} | {program.formatted_info} | {program.avg / best_avg.avg:.2f}x"
-        for program in programs
+        f"| {program.formatted_name} | {program.formatted_info} | {f'{program.avg / best_avg.avg:.2f}x' if i != 0 else '-'} | {f'{program.avg / programs[i - 1].avg:.2f}x' if i != 0 else '-'} |"
+        for i, program in enumerate(programs)
     ),
 ]
 
