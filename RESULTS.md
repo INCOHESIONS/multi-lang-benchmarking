@@ -9,28 +9,28 @@
 ---
 
 ## Summary
-> sorted by avg
+> sorted by avg, diffs based on avg
 
-|  Program  |  Average  |  Min  |  Max  |   Total   |  Diff  |
-|-----------|:---------:|:-----:|:-----:|:---------:|:------:|
-| Python *with compushady* **(GPU)** | `1.322ms` | `1.310ms` | `1.355ms` | `13.216ms` | 1.00x
-| Python *with zengl* **(GPU)** | `4.587ms` | `4.512ms` | `4.716ms` | `45.866ms` | 3.47x
-| C# *with ComputeSharp* **(GPU)** | `8.146ms` | `7.817ms` | `8.951ms` | `81.457ms` | 6.16x
-| C++ *with no library* **(CPU)** | `8.815ms` | `6.240ms` | `18.275ms` | `88.152ms` | 6.67x
-| Zig *with zigimg* **(CPU)** | `30.250ms` | `30.127ms` | `30.464ms` | `302.499ms` | 22.89x
-| Rust *with image* **(CPU)** | `65.789ms` | `65.454ms` | `66.643ms` | `657.889ms` | 49.78x
-| C# *with ImageSharp* **(CPU)** | `154.359ms` | `152.520ms` | `157.735ms` | `1.544s` | 116.79x
-| Go *with image* **(CPU)** | `188.937ms` | `188.161ms` | `190.163ms` | `1.889s` | 142.96x
-| Java *with java.awt.image* **(CPU)** | `281.845ms` | `279.941ms` | `283.456ms` | `2.818s` | 213.25x
-| Python *with Numba* **(CPU)** | `528.330ms` | `524.205ms` | `531.808ms` | `5.283s` | 399.75x
-| Typescript *with node-canvas* **(CPU)** | `1.774s` | `1.763s` | `1.783s` | `17.736s` | 1341.95x
-| Python *with Pillow* **(CPU)** | `21.449s` | `20.807s` | `22.935s` | `03:34min` | 16228.65x
+|  Program  |  Average  |  Min  |  Max  |   Total   |  Diff. from #1  | Diff. from Previous. |
+|-----------|:---------:|:-----:|:-----:|:---------:|:---------------:|:--------------------:|
+| Python *with compushady* **(GPU)** | `1.366ms` | `1.359ms` | `1.396ms` | `13.665ms` | - | - |
+| Python *with zengl* **(GPU)** | `5.089ms` | `4.746ms` | `5.190ms` | `50.888ms` | 3.72x | 3.72x |
+| C++ *with no library* **(CPU)** | `7.745ms` | `6.172ms` | `12.386ms` | `77.447ms` | 5.67x | 1.52x |
+| C# *with ComputeSharp* **(GPU)** | `8.032ms` | `7.867ms` | `8.262ms` | `80.321ms` | 5.88x | 1.04x |
+| Zig *with zigimg* **(CPU)** | `30.682ms` | `30.264ms` | `30.945ms` | `306.824ms` | 22.45x | 3.82x |
+| Rust *with image* **(CPU)** | `66.245ms` | `65.442ms` | `68.691ms` | `662.446ms` | 48.48x | 2.16x |
+| C# *with ImageSharp* **(CPU)** | `156.035ms` | `152.079ms` | `163.089ms` | `1.560s` | 114.19x | 2.36x |
+| Go *with image* **(CPU)** | `192.791ms` | `192.063ms` | `194.605ms` | `1.928s` | 141.09x | 1.24x |
+| Java *with java.awt.image* **(CPU)** | `284.292ms` | `281.404ms` | `295.998ms` | `2.843s` | 208.05x | 1.47x |
+| Python *with Numba* **(CPU)** | `531.179ms` | `528.082ms` | `535.852ms` | `5.312s` | 388.72x | 1.87x |
+| Typescript *with node-canvas* **(CPU)** | `1.774s` | `1.751s` | `1.805s` | `17.743s` | 1298.47x | 3.34x |
+| Python *with Pillow* **(CPU)** | `21.418s` | `21.005s` | `22.136s` | `03:34min` | 15674.07x | 12.07x |
 
 ---
 
 ## Stats
 
-- total time taken: `05:52min`.
+- total time taken: `05:43min`.
 - total time taken (just runs): `04:04min`.
-- best avg: Python *with compushady* **(GPU)** `(1.322ms)`.
-- worst avg: Python *with Pillow* **(CPU)** `(21.449s)`.
+- best avg: Python *with compushady* **(GPU)** `(1.366ms)`.
+- worst avg: Python *with Pillow* **(CPU)** `(21.418s)`.
