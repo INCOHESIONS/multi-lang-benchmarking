@@ -2,6 +2,7 @@
 
 import subprocess
 from argparse import ArgumentParser
+from datetime import datetime, timezone
 from pathlib import Path
 from time import perf_counter_ns
 
@@ -46,6 +47,7 @@ header = [
     f"> approx. VRAM: {gpu.dedicated_video_memory // (1024**2):.0f} MB |",
     f"> Width: {WIDTH}; Height: {HEIGHT}; Number of points: {NUMBER_OF_POINTS} |",
     f"> {len(all_dirs)} programs, {RUN_COUNT + 1} runs each (1st run is discarded and not included)",
+    f"> Data gathered on {datetime.now(timezone.utc).isoformat().split('.')}Z",
 ]
 
 if len(all_dirs) == 0:
@@ -145,10 +147,10 @@ summary = [
     "## Summary",
     f"> sorted by {SORT_BY}, diffs based on avg",
     "",
-    "|  Program  |  Average  |  Min  |  Max  |   Total   |  Diff. from #1  | Diff. from Previous |",
-    "|-----------|:---------:|:-----:|:-----:|:---------:|:---------------:|:-------------------:|",
+    "|  Program  |  Average  |  Min  |  Max  |   Total   | Range |  Diff. from #1  | Diff. from Previous |",
+    "|-----------|:---------:|:-----:|:-----:|:---------:|:------|:---------------:|:-------------------:|",
     *(
-        f"| {program.formatted_name} | {program.formatted_info} | {f'{program.avg / best_avg.avg:.2f}x' if i != 0 else '-'} | {f'{program.avg / programs[i - 1].avg:.2f}x' if i != 0 else '-'} |"
+        f"| {program.formatted_name} | {program.formatted_info} | {format_time(program.max - program.min)} | {f'{program.avg / best_avg.avg:.2f}x' if i != 0 else '-'} | {f'{program.avg / programs[i - 1].avg:.2f}x' if i != 0 else '-'} |"
         for i, program in enumerate(programs)
     ),
 ]
