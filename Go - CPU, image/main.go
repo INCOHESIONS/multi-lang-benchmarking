@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"image"
+	"image/color"
 	"image/png"
 	"math"
 	"math/rand"
@@ -36,7 +37,7 @@ func main() {
 				minDistance = min(minDistance, squaredDistance(p, x, y))
 			}
 
-			img.Pix[(y-rect.Min.Y)*img.Stride+(x-rect.Min.X)*1] = 255 - uint8(clamp(int(math.Sqrt(float64(minDistance))), 0, 255))
+			img.Set(x, y, color.Gray{255 - uint8(clamp(int(math.Sqrt(float64(minDistance))), 0, 255))})
 		}
 	}
 
