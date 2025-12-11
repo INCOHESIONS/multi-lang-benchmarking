@@ -8,14 +8,10 @@ def format_program_dir(path: Path, /, *, stylize: bool = False) -> str:
         device, library = rest.split(", ")
     else:
         device = rest
-        library = "no library"
+        library = False
 
-    formatted = f"{language} *with {library}* **({device})**"
+    formatted = f"{language}{f' *with {library}*' if library else ''} **({device})**"
     return formatted if stylize else formatted.replace("*", "")
-
-
-def replace_last(text: str, old: str, new: str, /) -> str:
-    return new.join(text.rsplit(old, 1))
 
 
 def format_list(text: str, /, *, period: bool = True) -> str:
@@ -43,3 +39,7 @@ def format_time(ns: float, /, *, only_seconds: bool = False) -> str:
 
     minutes, seconds = divmod(sec, 60)
     return f"{str(int(minutes)).rjust(2, '0')}:{str(int(seconds)).rjust(2, '0')}min"
+
+
+def replace_last(text: str, old: str, new: str, /) -> str:
+    return new.join(text.rsplit(old, 1))

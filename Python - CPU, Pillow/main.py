@@ -42,8 +42,6 @@ data = [
 
 end = perf_counter_ns()
 
-image.putdata(data)
-
 print(end - start)
 
 if not save_image:
@@ -52,4 +50,5 @@ if not save_image:
 if not os.path.exists("img/"):
     os.mkdir("img/")
 
+image.putdata(data)
 image.save(f"img/{random_characters()}.png")
