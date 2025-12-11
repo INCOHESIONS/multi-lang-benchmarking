@@ -142,12 +142,9 @@ logger.info(
 programs.sort(key=lambda program: getattr(program, SORT_BY))
 
 
-best_avg = min(programs, key=lambda p: p.avg)
-worst_avg = max(programs, key=lambda p: p.avg)
-
-
 def generate_table(programs: Iterable[Program], /) -> list[str]:
     programs = list(programs)
+    best_avg = min(programs, key=lambda p: p.avg)
     return [
         "|  Program  |  Average  |  Min  |  Max  |   Total   | Range  |  Total Difference  | Relative Difference |",
         "|-----------|:---------:|:-----:|:-----:|:---------:|:------:|:------------------:|:-------------------:|",
@@ -171,6 +168,9 @@ summary = [
     "### GPU Programs",
     *generate_table(filter(lambda p: p.device == "GPU", programs)),
 ]
+
+best_avg = min(programs, key=lambda p: p.avg)
+worst_avg = max(programs, key=lambda p: p.avg)
 
 largest_range = max(programs, key=lambda p: p.range)
 smallest_range = min(programs, key=lambda p: p.avg)
