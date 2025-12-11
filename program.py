@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Self, final
+from typing import Literal, Self, final
 
 from utils import format_list, format_program_dir, format_time
 
@@ -16,6 +16,7 @@ class Program:
     avg: float
     min: float
     max: float
+    device: Literal["CPU", "GPU"]
 
     @classmethod
     def from_timings(cls, path: Path, timings: list[float], /) -> Self:
@@ -26,6 +27,7 @@ class Program:
             total / len(timings),
             min(timings),
             max(timings),
+            "CPU" if "CPU" in path.name else "GPU",
         )
 
     @property
@@ -49,3 +51,7 @@ class Program:
             ),
             period=False,
         )
+
+    @property
+    def range(self) -> float:
+        return self.max - self.min

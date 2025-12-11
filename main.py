@@ -2,6 +2,7 @@
 
 import subprocess
 from argparse import ArgumentParser
+from collections.abc import Iterable
 from datetime import datetime, timezone
 from pathlib import Path
 from time import perf_counter_ns
@@ -47,7 +48,7 @@ header = [
     f"> approx. VRAM: {gpu.dedicated_video_memory // (1024**2):.0f} MB |",
     f"> Width: {WIDTH}; Height: {HEIGHT}; Number of points: {NUMBER_OF_POINTS} |",
     f"> {len(all_dirs)} programs, {RUN_COUNT + 1} runs each (1st run is discarded and not included)",
-    f"> Data gathered on {datetime.now(timezone.utc).isoformat().split('.')}Z",
+    f"> Data gathered on {datetime.now(timezone.utc).isoformat().split('.')[0]}Z",
 ]
 
 if len(all_dirs) == 0:
@@ -140,28 +141,49 @@ logger.info(
 
 programs.sort(key=lambda program: getattr(program, SORT_BY))
 
+
 best_avg = min(programs, key=lambda p: p.avg)
 worst_avg = max(programs, key=lambda p: p.avg)
+
+
+def generate_table(programs: Iterable[Program], /) -> list[str]:
+    programs = list(programs)
+    return [
+        "|  Program  |  Average  |  Min  |  Max  |   Total   | Range |  Total Difference  | Relative Difference |",
+        "|-----------|:---------:|:-----:|:-----:|:---------:|:------|:------------------:|:-------------------:|",
+        *(
+            f"| {program.formatted_name} | {program.formatted_info} | {format_time(program.range)} | {f'{program.avg / best_avg.avg:.2f}x' if i != 0 else '-'} | {f'{program.avg / programs[i - 1].avg:.2f}x' if i != 0 else '-'} |"
+            for i, program in enumerate(programs)
+        ),
+    ]
+
 
 summary = [
     "## Summary",
     f"> sorted by {SORT_BY}, diffs based on avg",
     "",
-    "|  Program  |  Average  |  Min  |  Max  |   Total   | Range |  Diff. from #1  | Diff. from Previous |",
-    "|-----------|:---------:|:-----:|:-----:|:---------:|:------|:---------------:|:-------------------:|",
-    *(
-        f"| {program.formatted_name} | {program.formatted_info} | {format_time(program.max - program.min)} | {f'{program.avg / best_avg.avg:.2f}x' if i != 0 else '-'} | {f'{program.avg / programs[i - 1].avg:.2f}x' if i != 0 else '-'} |"
-        for i, program in enumerate(programs)
-    ),
+    "### All Programs",
+    *generate_table(programs),
+    "",
+    "### CPU Programs",
+    *generate_table(filter(lambda p: p.device == "CPU", programs)),
+    "",
+    "### GPU Programs",
+    *generate_table(filter(lambda p: p.device == "GPU", programs)),
 ]
+
+largest_range = max(programs, key=lambda p: p.range)
+smallest_range = min(programs, key=lambda p: p.avg)
 
 stats = [
     "## Stats",
     "",
-    f"- total time taken: `{format_time(perf_counter_ns() - start)}`.",
-    f"- total time taken (just runs): `{format_time(sum(program.total for program in programs))}`.",
-    f"- best avg: {best_avg.formatted_name} `({format_time(best_avg.avg)})`.",
-    f"- worst avg: {worst_avg.formatted_name} `({format_time(worst_avg.avg)})`.",
+    f"- Total time: `{format_time(perf_counter_ns() - start)}`.",
+    f"- Sum runtime: `{format_time(sum(program.total for program in programs))}`.",
+    f"- Best average time: {best_avg.formatted_name} `({format_time(best_avg.avg)})`.",
+    f"- Worst average time: {worst_avg.formatted_name} `({format_time(worst_avg.avg)})`.",
+    f"- Largest range: {largest_range.formatted_name} `({format_time(largest_range.range)})`.",
+    f"- Smallest range: {smallest_range.formatted_name} `({format_time(smallest_range.range)})`.",
 ]
 
 separator = ["", "---", ""]
