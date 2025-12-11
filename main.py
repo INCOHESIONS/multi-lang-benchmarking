@@ -47,7 +47,7 @@ header = [
     f"> approx. RAM: {psutil.virtual_memory().total // (1024**2):.0f} MB |",
     f"> approx. VRAM: {gpu.dedicated_video_memory // (1024**2):.0f} MB |",
     f"> Width: {WIDTH}; Height: {HEIGHT}; Number of points: {NUMBER_OF_POINTS} |",
-    f"> {len(all_dirs)} programs, {RUN_COUNT + 1} runs each (1st run is discarded and not included)",
+    f"> {len(all_dirs)} programs, {RUN_COUNT + 1} runs each (1st run is discarded and not included) |",
     f"> Data gathered on {datetime.now(timezone.utc).isoformat().split('.')[0]}Z",
 ]
 

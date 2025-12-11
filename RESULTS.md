@@ -4,7 +4,7 @@
 > approx. RAM: 32694 MB |
 > approx. VRAM: 8146 MB |
 > Width: 1000; Height: 1000; Number of points: 100 |
-> 12 programs, 11 runs each (1st run is discarded and not included)
+> 12 programs, 11 runs each (1st run is discarded and not included) |
 > Data gathered on 2025-12-11T05:13:37Z
 
 ---
