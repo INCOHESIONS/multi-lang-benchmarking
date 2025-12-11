@@ -149,8 +149,8 @@ worst_avg = max(programs, key=lambda p: p.avg)
 def generate_table(programs: Iterable[Program], /) -> list[str]:
     programs = list(programs)
     return [
-        "|  Program  |  Average  |  Min  |  Max  |   Total   | Range |  Total Difference  | Relative Difference |",
-        "|-----------|:---------:|:-----:|:-----:|:---------:|:------|:------------------:|:-------------------:|",
+        "|  Program  |  Average  |  Min  |  Max  |   Total   | Range  |  Total Difference  | Relative Difference |",
+        "|-----------|:---------:|:-----:|:-----:|:---------:|:------:|:------------------:|:-------------------:|",
         *(
             f"| {program.formatted_name} | {program.formatted_info} | `{format_time(program.range)}` | {f'`{program.avg / best_avg.avg:.2f}x`' if i != 0 else '-'} | {f'`{program.avg / programs[i - 1].avg:.2f}x`' if i != 0 else '-'} |"
             for i, program in enumerate(programs)

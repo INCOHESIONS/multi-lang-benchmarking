@@ -13,8 +13,8 @@
 > sorted by avg, diffs based on avg
 
 ### All Programs
-|  Program  |  Average  |  Min  |  Max  |   Total   | Range |  Total Difference  | Relative Difference |
-|-----------|:---------:|:-----:|:-----:|:---------:|:------|:------------------:|:-------------------:|
+|  Program  |  Average  |  Min  |  Max  |   Total   | Range  |  Total Difference  | Relative Difference |
+|-----------|:---------:|:-----:|:-----:|:---------:|:------:|:------------------:|:-------------------:|
 | Python *with compushady* **(GPU)** | `1.346ms` | `1.339ms` | `1.369ms` | `13.458ms` | `29.600µs` | - | - |
 | Python *with zengl* **(GPU)** | `4.927ms` | `4.760ms` | `5.198ms` | `49.266ms` | `438.400µs` | `3.66x` | `3.66x` |
 | C# *with ComputeSharp* **(GPU)** | `8.100ms` | `7.936ms` | `8.249ms` | `80.997ms` | `313.300µs` | `6.02x` | `1.64x` |
