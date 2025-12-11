@@ -55,6 +55,8 @@ points = np.array(
     dtype=np.int32,
 )
 
+_ = generate(width, height, points)
+
 start = perf_counter_ns()
 
 data = generate(width, height, points)
